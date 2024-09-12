@@ -9,28 +9,47 @@
 // 큰 페이지는 server component로 , js 기능 필요한 곳만 client component
 
 import age from './data.js';
+import Payment from './payment/page.js';
 
 export default function Cart(){
+    let 장바구니 = ['Tomato','Pasta','Coconut']; //function 안에서 만든 변수는 해당 function 안에서만 사용 가능
     return(
         <div>
         <h4 className="title">Cart</h4>
-        <div className="cart-item">
-          <p>상품명 {age}</p>
-          <p>$40</p>
-          <p>1개</p>
-        </div>
-        <CartItem />
+        <CartItem item = {장바구니[0]}/>
+        <CartItem item = {장바구니[1]} />
+        <CartItem item = {장바구니[2]}/>
+        <Payment />
+        <Banner content = "롯데카드" />
+        <Banner content = "현대카드" />
+        <Btn buttoncolor = "blue"/>
       </div>
     );
 }
 
-function CartItem(){
+function Banner(props){
+  return <h5>{props.content} 결제 행사중</h5>
+}
+// 이때 Cart 컴포넌트가 CartItem을 감싸고 있으므로 Cart가 부모 컴포넌트이고, CartItem이 자식 컴포넌트가 됨
+// 부모 컴포넌트에서 만든 변수를 자식 컴포넌트로 전달하고 싶으면 부모 컴포넌트에서 자식 컴포넌트가 사용된 부분에서 <자식컴포넌트 작명 = '전할 데이터' /> 하고(변수나 함수를 전달하고 싶으면 {}사용)
+// 자식 컴포넌트에서 props로 받아옴. 받은 데이터를 사용할 부분에서 {props.작명} 이렇게 사용
+// 자식이 부모한테 데이터 전달은 못함. 
+// 부모-자식 관계가 아닌 관계 없는 컴포넌트끼리는 데이터 전송 불가능 ex) 자식-자식 
+// 데이터가 많은 컴포넌트에서 필요한 데이터나 변수/함수가 있다면 그들 중 최고 부모 컴포넌트에 보관해야 좋음 why? 부모 > 자식으로만 데이터 전송이 가능하기 때문
+function CartItem(props){
     return(
         <div className="cart-item">
-          <p>상품명</p>
+          <p>상품명 {props.item} </p>
           <p>$40</p>
           <p>1개</p>
         </div>
     )
 }
 //재사용이 잦은 html 덩어리들을 주로 component로 만드는게 좋음
+
+function Btn(props){
+  return(
+    <button style={{background:props.buttoncolor}}>버튼</button>
+  )
+}
+
